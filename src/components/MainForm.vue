@@ -1,31 +1,57 @@
 <script setup>
-import {ref} from 'vue'
+import { DxValidator, DxRequiredRule } from "devextreme-vue/validator";
+import { ref } from "vue";
 import { DxButton } from "devextreme-vue/button";
 import { DxTextBox } from "devextreme-vue/text-box";
+import { productStore } from "../store/store";
 
-const token = ref()
+const store = productStore();
 
+const height = 40;
+
+const onClick = () => {};
+
+const handleSubmit = (e) => {
+  const token = e.target[0].value.trim()
+
+  localStorage.setItem('token', token)
+  store.fetchActives(token)
+  // fetch("https://exchange844.artydev.ru/api/v1/exchange_info", {
+  //   method: "POST",
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify({token: e.target[0].value.trim()})
+  // })
+  //   .then((res) => res.json())
+  //   .then((data) => console.log(data));
+
+  // fetch('../assets/test.json').then(res => res.json()).then(data => data)
+};
 </script>
 <template>
-  <div class="custom-form">
+  <form class="custom-form" @submit.prevent="handleSubmit">
     <DxTextBox
-      :height='30'
+      :height="height"
+      name="token"
       v-model="token"
       mode="text"
       styling-mode="outlined"
-      label='Укжите токен Tinkoff'
+      label="Укжите токен Tinkoff"
       class="custom-input"
-    />
+    >
+      <DxValidator ref="validate">
+        <DxRequiredRule message="Укажите токен!" />
+      </DxValidator>
+    </DxTextBox>
     <DxButton
-      :height='30'
-      text="Отправить"
-      type="default"
-      icon=""
-      hint=""
-      @click="onClick(event)"
       class="custom-button"
+      :height="height"
+      text="Проверить"
+      type="default"
+      icon="taskcomplete"
+      @click="onClick(event)"
+      :use-submit-behavior="true"
     />
-  </div>
+  </form>
 </template>
 
 <style scoped lang="scss">
@@ -33,17 +59,14 @@ const token = ref()
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 30px;
+  // margin-bottom: 30px;
 
   .custom-input {
     flex: 1;
   }
-
-
 }
 
 .custom-button {
-    margin-top: 4px;
-  }
-
+  margin-top: 4px;
+}
 </style>

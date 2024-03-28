@@ -1,24 +1,25 @@
 <script setup>
-import MainForm from './components/MainForm.vue'
-import MainGrid from './components/MainGrid.vue'
+import TheHeader from "./components/TheHeader.vue";
+import MainForm from "./components/MainForm.vue";
+import MainGrid from "./components/MainGrid.vue";
+import TheStatus from "./components/TheStatus.vue";
+import MainText from "./components/MainText.vue";
 </script>
 
 <template>
-  <MainForm />
-  <MainGrid />
+  <div class="main-wrapper">
+    <TheHeader />
+    <MainForm />
+    <MainText/>
+    <MainGrid />
+  </div>
+  <TheStatus/>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 </style>
