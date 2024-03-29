@@ -1,44 +1,43 @@
 <script setup>
-import { DxDataGrid, DxColumn } from "devextreme-vue/data-grid";
-import DataSource from "devextreme/data/data_source";
+import {
+  DxDataGrid,
+  DxColumn,
+  DxFormat,
+  DxSummary,
+  DxTotalItem,
+} from "devextreme-vue/data-grid";
 import { onMounted } from "vue";
 import { productStore } from "../store/store";
 
 const store = productStore();
+const currencyDictionary = {
+  RUB: "₽",
+  EUR: "€",
+  USD: "$",
+  CNY: "¥",
+  HK: "$",
+};
 
 onMounted(() => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem("token");
   if (token) {
-    console.log(token)
-    store.fetchActives(token)
+    console.log(token);
+    store.fetchActives(token);
   }
 });
 
-const gridSource = new DataSource({
-  key: "figi",
-  load() {
-    return [
-      {
-        ticker: "Nubank",
-        figi: "KYG6683N1034",
-        quantity: 3,
-        price: "3.79000000",
-        total: "11.37000000",
-        currency: "usd",
-        acc: "Comeback",
-      },
-      {
-        ticker: "Uber",
-        figi: "US90353T1007",
-        quantity: 6,
-        price: "22.02000000",
-        total: "132.12000000",
-        currency: "usd",
-        acc: "Aggressive investing",
-      },
-    ];
-  },
-});
+const customizeRub = (item) => (item.value ? `${item.valueText} ₽` : "-");
+const customizeCurrency = (e) => {
+  if (e.rowType != "data") return;
+  if (e.column.dataField === "total" || e.column.dataField === "price") {
+    e.cellElement.innerHTML = `${e.text} ${
+      currencyDictionary[e.data.currency]
+    }`;
+  } else if (e.column.dataField === "is_exchange" && e.value === true) {
+    e.cellElement.querySelector(".dx-checkbox-icon").style.background =
+      "#cddc39";
+  }
+};
 </script>
 <template>
   <div>
@@ -48,10 +47,11 @@ const gridSource = new DataSource({
       :column-auto-width="true"
       :loadPanel="{ showIndicator: false, showPane: false, text: '' }"
       no-data-text="Нет данных"
+      @cell-prepared="customizeCurrency"
     >
-      <!-- <DxHeaderFilter :visible="true" /> -->
-      <!-- <DxFilterRow :visible="true" apply-filter="auto" /> -->
-      <DxColumn data-field="ticker" caption="Тикер" data-type="string" />
+      <DxColumn data-field="name" caption="Тикер" data-type="string" />
+
+      <DxColumn data-field="_type" caption="Тип" data-type="string" />
       <DxColumn data-field="figi" caption="Figi" data-type="string" />
       <DxColumn
         alignment="left"
@@ -64,15 +64,53 @@ const gridSource = new DataSource({
         data-field="price"
         caption="Цена"
         data-type="number"
-      />
+      >
+        <DxFormat type="fixedPoint" :precision="2" />
+      </DxColumn>
+      <DxColumn alignment="left" data-field="total" caption="Сумма">
+        <DxFormat type="fixedPoint" :precision="2" />
+      </DxColumn>
       <DxColumn
         alignment="left"
-        data-field="total"
-        caption="Сумма"
+        data-field="price_cb"
+        caption="Фикс. цена"
         data-type="number"
+        :customize-text="customizeRub"
+      >
+        <DxFormat type="fixedPoint" :precision="2" />
+      </DxColumn>
+      <DxColumn
+        alignment="left"
+        data-field="total_cb_price"
+        caption="Фикс. сумма"
+        data-type="number"
+        :customize-text="customizeRub"
+      >
+        <DxFormat type="fixedPoint" :precision="2" />
+      </DxColumn>
+      <DxColumn
+        data-field="is_exchange"
+        caption="Доступно"
+        data-type="boolean"
       />
-      <DxColumn data-field="currency" caption="Валюта" data-type="string" />
       <DxColumn data-field="acc" caption="Портфель" data-type="string" />
+      <DxSummary>
+        <DxTotalItem
+          column="total_cb_price"
+          summary-type="sum"
+          :value-format="{
+            style: 'currency',
+            currency: 'RUB',
+            useGrouping: true,
+          }"
+        />
+      </DxSummary>
     </DxDataGrid>
   </div>
 </template>
+
+<style scoped>
+/* .dx-datagrid-checkbox-size.dx-checkbox-checked .dx-checkbox-icon {
+  border: 1px solid red !important;
+} */
+</style>
