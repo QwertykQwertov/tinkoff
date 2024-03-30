@@ -16,13 +16,7 @@ const handleSubmit = (e) => {
 
   localStorage.setItem('token', token)
   store.fetchActives(token)
-  // fetch("https://exchange844.artydev.ru/api/v1/exchange_info", {
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({token: e.target[0].value.trim()})
-  // })
-  //   .then((res) => res.json())
-  //   .then((data) => console.log(data));
+
 
   // fetch('../assets/test.json').then(res => res.json()).then(data => data)
 };

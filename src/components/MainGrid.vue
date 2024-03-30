@@ -21,15 +21,16 @@ const currencyDictionary = {
 onMounted(() => {
   const token = localStorage.getItem("token");
   if (token) {
-    console.log(token);
     store.fetchActives(token);
   }
 });
 
-const customizeRub = (item) => (item.value ? `${item.valueText} ₽` : "-");
+const customizeRub = (item) => `${item.valueText} ₽`;
 const customizeCurrency = (e) => {
   if (e.rowType != "data") return;
-  if (e.column.dataField === "total" || e.column.dataField === "price") {
+  if (e.value === null) {
+    e.cellElement.innerHTML = "-";
+  } else if (e.column.dataField === "total" || e.column.dataField === "price") {
     e.cellElement.innerHTML = `${e.text} ${
       currencyDictionary[e.data.currency]
     }`;
@@ -49,14 +50,14 @@ const customizeCurrency = (e) => {
       no-data-text="Нет данных"
       @cell-prepared="customizeCurrency"
     >
-      <DxColumn data-field="name" caption="Тикер" data-type="string" />
+      <DxColumn data-field="name" caption="Наименование" data-type="string" />
 
+      <DxColumn data-field="figi" caption="FIGI" data-type="string" />
       <DxColumn data-field="_type" caption="Тип" data-type="string" />
-      <DxColumn data-field="figi" caption="Figi" data-type="string" />
       <DxColumn
         alignment="left"
         data-field="quantity"
-        caption="Количество"
+        caption="Кол-во"
         data-type="number"
       />
       <DxColumn
@@ -92,6 +93,7 @@ const customizeCurrency = (e) => {
         data-field="is_exchange"
         caption="Доступно"
         data-type="boolean"
+        :width="90"
       />
       <DxColumn data-field="acc" caption="Портфель" data-type="string" />
       <DxSummary>

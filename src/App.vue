@@ -12,6 +12,7 @@ import MainText from "./components/MainText.vue";
     <MainForm />
     <MainText/>
     <MainGrid />
+    <p>*Фикс. цена - сумма, зафиксированная организатором торгов 22 марта 2024 года. Ниже неё активы проданы не будут.</p>
   </div>
   <TheStatus/>
 </template>
