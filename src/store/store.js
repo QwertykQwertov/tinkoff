@@ -1,28 +1,17 @@
 import { defineStore } from 'pinia'
 
-export const productStore = defineStore('products', {
+export const mainStore = defineStore('products', {
   state: () => ({
-    actives: []
+    actives: [],
+    totalSummary: 0,
   }),
 
   actions: {
-    fetchActives(token) {
-      // fetch('test.json').then(res => res.json()).then(data => {
-      //   this.actives = data.rows.map(el => ({ ...el, is_exchange: el.is_exchange === 'Y' ? true : false }))
-      // })
-      // return
-      fetch("https://exchange844.artydev.ru/api/v1/exchange_info", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token })
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          this.actives = data.rows.map(el => ({ ...el, is_exchange: el.is_exchange === 'Y' ? true : false }))
-        }).catch(err => {
-          console.log(err)
-        })
-
+    setActives(data) {
+      this.actives = data
+    },
+    setTotalSummary(total) {
+      this.totalSummary = total
     }
   }
 })

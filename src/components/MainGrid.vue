@@ -7,38 +7,21 @@ import {
   DxTotalItem,
 } from "devextreme-vue/data-grid";
 import { onMounted } from "vue";
-import { productStore } from "../store/store";
+import { mainStore } from "../store/store.js";
+import { getActives } from "../modules/requests.js";
+import { customizeRub, customizeCurrency } from "../functions.js";
 
-const store = productStore();
-const currencyDictionary = {
-  RUB: "₽",
-  EUR: "€",
-  USD: "$",
-  CNY: "¥",
-  HK: "$",
-};
+const store = mainStore();
 
 onMounted(() => {
   const token = localStorage.getItem("token");
   if (token) {
-    store.fetchActives(token);
+    getActives(token).then((data) => {
+      store.setActives(data.rows);
+      store.setTotalSummary(data.total_rub);
+    });
   }
 });
-
-const customizeRub = (item) => `${item.valueText} ₽`;
-const customizeCurrency = (e) => {
-  if (e.rowType != "data") return;
-  if (e.value === null) {
-    e.cellElement.innerHTML = "-";
-  } else if (e.column.dataField === "total" || e.column.dataField === "price") {
-    e.cellElement.innerHTML = `${e.text} ${
-      currencyDictionary[e.data.currency]
-    }`;
-  } else if (e.column.dataField === "is_exchange" && e.value === true) {
-    e.cellElement.querySelector(".dx-checkbox-icon").style.background =
-      "#cddc39";
-  }
-};
 </script>
 <template>
   <div>
@@ -110,9 +93,3 @@ const customizeCurrency = (e) => {
     </DxDataGrid>
   </div>
 </template>
-
-<style scoped>
-/* .dx-datagrid-checkbox-size.dx-checkbox-checked .dx-checkbox-icon {
-  border: 1px solid red !important;
-} */
-</style>

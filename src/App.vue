@@ -2,8 +2,13 @@
 import TheHeader from "./components/TheHeader.vue";
 import MainForm from "./components/MainForm.vue";
 import MainGrid from "./components/MainGrid.vue";
-import TheStatus from "./components/TheStatus.vue";
 import MainText from "./components/MainText.vue";
+import AccessNum from "./components/AccessNum.vue";
+import { DxToast } from "devextreme-vue/toast";
+import { message, isVisible, type } from "./modules/toast";
+import { checkServise } from "./modules/requests";
+
+checkServise();
 </script>
 
 <template>
@@ -11,10 +16,16 @@ import MainText from "./components/MainText.vue";
     <TheHeader />
     <MainForm />
     <MainText/>
+    <AccessNum/>
     <MainGrid />
     <p>*Фикс. цена - сумма, зафиксированная организатором торгов 22 марта 2024 года. Ниже неё активы проданы не будут.</p>
   </div>
-  <TheStatus/>
+  <DxToast
+    v-model:visible="isVisible"
+    v-model:message="message"
+    v-model:type="type"
+    :display-time="1500"
+  />
 </template>
 
 <style scoped>
