@@ -4,6 +4,7 @@ import MainForm from "./components/MainForm.vue";
 import MainGrid from "./components/MainGrid.vue";
 import MainText from "./components/MainText.vue";
 import AccessNum from "./components/AccessNum.vue";
+import TheFooter from "./components/TheFooter.vue";
 import { DxToast } from "devextreme-vue/toast";
 import { message, isVisible, type } from "./modules/toast";
 import { checkServise } from "./modules/requests";
@@ -18,7 +19,8 @@ checkServise();
     <MainText/>
     <AccessNum/>
     <MainGrid />
-    <p>*Фикс. цена - сумма, зафиксированная организатором торгов 22 марта 2024 года. Ниже неё активы проданы не будут.</p>
+    <p class="info">*Фикс. цена - сумма, зафиксированная организатором торгов 22 марта 2024 года. Ниже неё активы проданы не будут.</p>
+    <TheFooter/>
   </div>
   <DxToast
     v-model:visible="isVisible"
@@ -32,6 +34,10 @@ checkServise();
 .main-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
+}
+
+.info {
+  margin: 0;
 }
 </style>

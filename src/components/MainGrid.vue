@@ -36,7 +36,7 @@ onMounted(() => {
       <DxColumn data-field="name" caption="Наименование" data-type="string" />
 
       <DxColumn data-field="figi" caption="FIGI" data-type="string" />
-      <DxColumn data-field="_type" caption="Тип" data-type="string" />
+      <DxColumn data-field="type" caption="Тип" data-type="string" />
       <DxColumn
         alignment="left"
         data-field="quantity"

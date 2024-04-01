@@ -8,7 +8,7 @@ import telegram from "../assets/telegram.svg";
       <img :src="spblogo" alt="" />
       <img :src="tinkofflogo" alt="" />
     <h1 class="header-title">Обмен заблокированных активов</h1>
-      <a href="https://t.me/artydevc" target="_blank"
+      <a class="header-link" href="https://t.me/artydevc" target="_blank"
         ><img :src="telegram" alt="telegram"
       /></a>
   </div>
@@ -27,5 +27,17 @@ import telegram from "../assets/telegram.svg";
     flex: 1;
   }
 }
+
+.header-link {
+  height: 63px;
+  width: 63px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  &:hover {
+    border-color: #cddc39;
+  }
+}
+
+
 
 </style>

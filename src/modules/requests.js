@@ -2,7 +2,7 @@ import { showToast } from "./toast.js";
 
 
 export async function getActives(token) {
-  return
+  // return
   return fetch("https://exchange844.artydev.ru/api/v1/exchange_info", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -15,7 +15,7 @@ export async function getActives(token) {
         return data
       }
       data.rows = data.rows.map(el => {
-        return { ...el, is_exchange: el.is_exchange === 'Y' ? true : false }
+        return { ...el, is_exchange: el.is_exchange === 'Y' ? true : false, type: el._type === 'Депозитарные расписки' ? 'Расписки' : el._type }
       })
       return data
 
