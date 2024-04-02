@@ -20,14 +20,10 @@ const handleSubmit = (e) => {
     store.setTotalSummary(data.total_rub);
   });
 };
-
-function infoClick() {
-  console.log('click')
-}
 </script>
 <template>
   <form class="custom-form" @submit.prevent="handleSubmit">
-    <a href="" title="Инструкция для получения токена" @click.prevent="infoClick"><img class="info-icon" src="../assets/info.svg" alt=""></a>
+    <a href="https://artydev.ru/posts/spb-exchange/#%D0%BA%D0%B0%D0%BA-%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B8%D1%82%D1%8C-%D1%82%D0%BE%D0%BA%D0%B5%D0%BD" title="Инструкция для получения токена" ><img class="info-icon" src="../assets/info.svg" alt=""></a>
     <DxTextBox
       :height="height"
       name="token"
