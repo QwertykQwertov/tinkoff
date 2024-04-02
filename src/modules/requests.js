@@ -15,7 +15,7 @@ export async function getActives(token) {
         return data
       }
       data.rows = data.rows.map(el => {
-        return { ...el, is_exchange: el.is_exchange === 'Y' ? true : false, type: el._type === 'Депозитарные расписки' ? 'Расписки' : el._type }
+        return { ...el, type: el._type === 'Депозитарные расписки' ? 'Расписки' : el._type }
       })
       return data
 

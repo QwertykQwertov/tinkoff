@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from "vue";
 import {
   DxDataGrid,
   DxColumn,
@@ -18,10 +19,15 @@ onMounted(() => {
   if (token) {
     getActives(token).then((data) => {
       store.setActives(data.rows);
-      store.setTotalSummary(data.total_rub);
+      store.setTotalSummary(data.total_rub_used);
+      store.sethasBlockedActives(data.status);
     });
   }
 });
+
+const noDataText = computed(() => {
+  return store.hasBlockedActives ? 'Нет данных' : 'Поздравляем, у Вас нет заблокированных активов!'
+})
 </script>
 <template>
   <div>
@@ -30,7 +36,7 @@ onMounted(() => {
       :data-source="store.actives"
       :column-auto-width="true"
       :loadPanel="{ showIndicator: false, showPane: false, text: '' }"
-      no-data-text="Нет данных"
+      :no-data-text="noDataText"
       @cell-prepared="customizeCurrency"
     >
       <DxColumn data-field="name" caption="Наименование" data-type="string" />
@@ -78,6 +84,12 @@ onMounted(() => {
         data-type="boolean"
         :width="90"
       />
+      <DxColumn
+        data-field="is_used"
+        caption="Подано"
+        data-type="boolean"
+        :width="90"
+      />
       <DxColumn data-field="acc" caption="Портфель" data-type="string" />
       <DxSummary>
         <DxTotalItem
@@ -85,8 +97,7 @@ onMounted(() => {
           summary-type="sum"
           :value-format="{
             style: 'currency',
-            currency: 'RUB',
-            useGrouping: true,
+            currency: 'RUB'
           }"
         />
       </DxSummary>

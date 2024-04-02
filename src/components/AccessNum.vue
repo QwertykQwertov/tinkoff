@@ -10,7 +10,7 @@ function checkTheLimit(value) {
 </script>
 
 <template>
-  <h3 v-if="store.totalSummary">Доступно: <span :class="checkTheLimit(store.totalSummary)">{{ beautyTotal(store.totalSummary) }}</span> / <span class="greenText">100 000 ₽</span></h3>
+  <h3 v-if="store.totalSummary">Подано на конвертацию: <span :class="checkTheLimit(store.totalSummary)">{{ beautyTotal(store.totalSummary) }}</span> / <span class="greenText">100 000 ₽</span></h3>
 </template>
 
 <style>
