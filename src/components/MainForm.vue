@@ -12,7 +12,7 @@ const height = 40;
 const onClick = () => {};
 
 const handleSubmit = (e) => {
-  const token = e.target[1].value.trim();
+  const token = e.target[0].value.trim();
 
   localStorage.setItem("token", token);
   getActives(token).then((data) => {
